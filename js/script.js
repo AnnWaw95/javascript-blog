@@ -27,7 +27,8 @@ function titleClickHandler(event){
     const targetAttribute = querySelector('href');
     console.log('targetAttribute:', targetAttribute);
   /* add class 'active' to the correct article */
-    targetArticle.classList.add('active');
+    
+    const targetArticle.classList.add('active');
     console.log('targetArticle:', targetArticle);
 }
 
