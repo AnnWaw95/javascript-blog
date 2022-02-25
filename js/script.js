@@ -30,7 +30,7 @@ const optArticleSelector = '.post',
 function generateTitleLinks(customSelector = ''){
 
   /* remove contents of titleList */
-    const titleList = document.querySelectorAll(optTitleListSelector);
+    const titleList = document.querySelector(optTitleListSelector);
     titleList.innerHTML = '';
     console.log(titleList)
   /* for each article */
