@@ -16,12 +16,17 @@ $font-text: 'Source Sans Pro', sans-serif;
 }
 
 body {
-  background: $color-light;
-  font-family: $font-text;
+  background-color: #6a89cc;
+  font-family: 'Cabin', sans-serif;
   color: $color-dark;
   font-weight: 300;
   font-size: 16px;
   line-height: 1.7;
+  background-image: url('https://i.postimg.cc/C5JPrh2k/pexels-rodnae-productions-8964251.jpg');
+  background-size: 100%;
+  image-orientation: flip;
+  background-attachment: scroll;
+  color: #ffcccc;
 }
 
 .container {
@@ -30,15 +35,18 @@ body {
 }
 
 .section-title {
-  font-size: 22px;
+  font-size: 30px;
   text-transform: uppercase;
-  font-family: $font-header;
+  font-family: 'Bebas Neue', cursive;
   font-weight: 600;
   span {
     text-transform: none;
     font-weight: 400;
-    color: lighten($color-dark, 20%);
+    color: #ffcccc;
   }
+}
+.blog {
+  
 }
 
 /* Layout */
@@ -57,7 +65,8 @@ body {
 }
 
 .sidebar, .posts {
-  background: $color-light;
+  background: #6a89cc;
+  back
   margin-right: 10px;
   padding: 40px;
   border: 1px solid $color-dark;
@@ -67,11 +76,11 @@ body {
 /* Logo */
 
 .logo {
-  font-family: $font-logo;
   font-weight: 400;
-  font-size: 104px;
+  font-size: 150px;
   line-height: 1;
   text-align: center;
+  font-family: 'Bebas Neue', cursive;
 }
 
 /* Lists */
@@ -106,10 +115,12 @@ body {
   &.active {
     display: block;
   }
+  font-family: 'Cabin', sans-serif;
 }
 
 .post-dish {
-  font-style: italic;
+  font-family: 'Cabin', sans-serif;
+  font-weight: bold;
 }
 
 .post-tags {
@@ -117,4 +128,11 @@ body {
   p {
     margin: 0 10px 0 0;
   }
+}
+
+.posts .post-title {
+  font-weight: bold;
+}
+.posts p {
+  font-family: 'Cabin', sans-serif;
 }
