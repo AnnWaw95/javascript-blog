@@ -10,17 +10,14 @@ function titleClickHandler(event){
     activeLink.classList.remove('active');
   }
   clickedElement.classList.add('active');
-  console.log('clickedElement:', clickedElement);
   const activeArticles = document.querySelectorAll('.post.active');
   for(let activeArticle of activeArticles){
     activeArticle.classList.remove('active');
   }
   const articleSelector = clickedElement.getAttribute('href');
-  console.log('articleSelector', articleSelector);
   const targetArticle = document.querySelector(articleSelector);
-  console.log('targetArticle', targetArticle);
   targetArticle.classList.add('active');
-  console.log('targetArticle:', targetArticle);
+
 }
 
 const optArticleSelector = '.post',
@@ -40,13 +37,9 @@ function generateTitleLinks(customSelector = ''){
   for(let article of articles){
     /* get the article id */
     const articleId = article.getAttribute('id');
-    console.log('articleId', articleId);
     /* find the title element */
-    
-    
     /* get the title from the title element */
     const articleTitle = article.querySelector(optTitleSelector).innerHTML;
-    console.log(articleTitle);
     /* create HTML of the link */
     const linkHTML = '<li><a href="#' + articleId + '"><span>' + articleTitle + '</span></a></li>';
     console.log('linkHTML', linkHTML);
@@ -75,8 +68,6 @@ function generateTags(){
     let html = '';
     /* get tags from data-tags attribute */
     const articleTags = article.getAttribute('data-tags');
-    let(for tag of tags);{
-    console.log('articleTags', articleTags);
     /* split tags into array */
     const articleTagsArray = articleTags.split(' ');
     /* START LOOP: for each tag */
@@ -92,12 +83,11 @@ function generateTags(){
     titleList.innerHTML = html;
     const links = article.querySelectorAll('.post-tags .list');
     console.log(links);
-    for(let tag of tags){
-      links.addEventListener('click', titleClickHandler);
-    }
-  }
+    // for(let tag of tag){
+    //   links.addEventListener('click', titleClickHandler);
+    // }
   /* END LOOP: for every article: */
-}
+  }
 }
 generateTags();
 
@@ -128,8 +118,9 @@ function tagClickHandler(event){
     /* add class active */
     tagLinkHref.classList.add('active');
   /* END LOOP: for each found tag link */
-}
+  }
   /* execute function "generateTitleLinks" with article selector as argument */
+  generateTitleLinks('[data-tags~="' + tag + '"]');
 }
 
 function addClickListenersToTags(){
@@ -141,6 +132,6 @@ function addClickListenersToTags(){
     /* add tagClickHandler as event listener for that link */
     link.addEventListener('click', tagClickHandler);
   /* END LOOP: for each link */
-}
+  }
 }
 addClickListenersToTags();
