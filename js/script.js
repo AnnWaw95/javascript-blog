@@ -23,7 +23,8 @@ function titleClickHandler(event){
 const optArticleSelector = '.post',
   optTitleSelector = '.post-title',
   optTitleListSelector = '.titles',
-  optArticleTagsSelector = '.post-tags .list';
+  optArticleTagsSelector = '.post-tags .list',
+  optArticleDishesSelector = '.post-dish';
 
 function generateTitleLinks(customSelector = ''){
 
@@ -135,3 +136,77 @@ function addClickListenersToTags(){
   }
 }
 addClickListenersToTags();
+
+function generateDishes(){
+  console.log('generateDishes');
+  /* find all articles */
+  const articles = document.querySelectorAll(optArticleSelector);
+  for(let article of articles){
+  /* START LOOP: for every article: */
+    /* find tags wrapper */
+    const titleList = article.querySelector(optArticleDishesSelector);
+    console.log(titleList);
+    /* make html variable with empty string */
+    let html = '';
+    /* get dishes from data-tags attribute */
+    const dishTags = article.getAttribute('data-dish');
+    /* generate HTML of the link */
+    const dishLinkHTML = '<li><a href="#dish-' + dishTags + '"><span>' + dishTags + '</span></a></li>';
+    console.log('dishLinkHTML', dishLinkHTML);
+    /* add generated code to html variable */
+    html = html + dishLinkHTML;
+    /* insert HTML of all the links into the tags wrapper */
+    titleList.innerHTML = html;
+    const links = article.querySelectorAll('.post-dish');
+    console.log(links);
+  //   for(let dish of dishes){
+  //     links.addEventListener('click', dishClickHandler);
+  //   }
+  // /* END LOOP: for every article: */
+  }
+}
+generateDishes();
+
+function dishClickHandler(event){
+  /* prevent default action for this event */
+  event.preventDefault();
+  /* make new constant named "clickedElement" and give it the value of "this" */
+  const clickedElement = this;
+  console.log('Dish was clicked!');
+  /* make a new constant "href" and read the attribute "href" of the clicked element */
+  const href = clickedElement.getAttribute('href');
+  /* make a new constant "tag" and extract tag from the "href" constant */
+  const tag = href.replace('#dish-', '');
+  /* find all tag links with class active */
+  const activeTags = document.querySelectorAll('a.active[href^="#dish-"]');
+  for(let activeTag of activeTags){
+  /* START LOOP: for each active tag link */
+
+    /* remove class active */
+    activeTag.classList.remove('active');
+  /* END LOOP: for each active tag link */
+  }
+  /* find all tag links with "href" attribute equal to the "href" constant */
+  const dishLinksHref = document.querySelectorAll('a[href="' + href + '"]');
+  /* START LOOP: for each found tag link */
+  for(let dishLinkHref of dishLinksHref){
+    /* add class active */
+    dishLinkHref.classList.add('active');
+  /* END LOOP: for each found tag link */
+  }
+  /* execute function "generateTitleLinks" with article selector as argument */
+  generateDishes('[data-dish="' + tag + '"]');
+}
+
+function addClickListenersToDishes(){
+  /* find all links to tags */
+  const allLinksToDishes = document.querySelectorAll('a[href^="#dish-"]');
+  console.log(allLinksToDishes);
+  /* START LOOP: for each link */
+  for(let link of allLinksToDishes){
+    /* add tagClickHandler as event listener for that link */
+    link.addEventListener('click', dishClickHandler);
+  /* END LOOP: for each link */
+  }
+}
+addClickListenersToDishes();
