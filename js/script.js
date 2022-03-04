@@ -178,12 +178,12 @@ function dishClickHandler(event){
   /* make a new constant "tag" and extract tag from the "href" constant */
   const tag = href.replace('#dish-', '');
   /* find all tag links with class active */
-  const activeTags = document.querySelectorAll('a.active[href^="#dish-"]');
-  for(let activeTag of activeTags){
+  const dishLinks = document.querySelectorAll('a.active[href^="#dish-"]');
+  for(let dishLink of dishLinks){
   /* START LOOP: for each active tag link */
 
     /* remove class active */
-    activeTag.classList.remove('active');
+    dishLink.classList.remove('active');
   /* END LOOP: for each active tag link */
   }
   /* find all tag links with "href" attribute equal to the "href" constant */
