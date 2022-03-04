@@ -195,7 +195,7 @@ function dishClickHandler(event){
   /* END LOOP: for each found tag link */
   }
   /* execute function "generateTitleLinks" with article selector as argument */
-  generateDishes('[data-dish="' + tag + '"]');
+  generateTitleLinks('[data-dish="' + tag + '"]');
 }
 
 function addClickListenersToDishes(){
