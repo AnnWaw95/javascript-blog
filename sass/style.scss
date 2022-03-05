@@ -135,3 +135,35 @@ body {
 .posts p {
   font-family: 'Cabin', sans-serif;
 }
+
+/* Tags */
+
+.tag-size-1 {
+  font-size: 15px;
+  color: #ffcccc;
+}
+
+.tag-size-2 {
+  font-size: 20px;
+  color: #7efff5;
+}
+
+.tag-size-3 {
+  font-size: 25px;
+  color: #fff200;
+}
+
+.tag-size-4 {
+  font-size: 30px;
+  color: #ffaf40;
+}
+
+.tag-size-5 {
+  font-size: 35px;
+  color: #3ae374;
+}
+
+.tags li {
+  display: inline-block;
+  margin: 0 6px;
+}
