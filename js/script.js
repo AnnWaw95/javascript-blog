@@ -25,7 +25,10 @@ const optArticleSelector = '.post',
   optTitleListSelector = '.titles',
   optArticleTagsSelector = '.post-tags .list',
   optArticleDishesSelector = '.post-dish',
-  optTagsListSelector = '.tags.list';
+  optTagsListSelector = '.tags.list',
+  optCloudClassCount = '5',
+  optCloudClassPrefix = 'tag-size-',
+  optDishesListSelector = '.dishes';
 
 function generateTitleLinks(customSelector = ''){
 
@@ -57,10 +60,26 @@ function generateTitleLinks(customSelector = ''){
 }
 generateTitleLinks();
 
+function calculateTagsParams(tags) {
+  const params = {max: 0, min: 999999};
+  for(let tag in tags){
+    console.log(tag + ' is used ' + tags[tag] + ' times');
+    params.max = Math.max(tags[tag], params.max);
+    params.min = Math.min(tags[tag], params.min);
+  }
+  return params;
+}
+function calculateTagClass(count, params){
+  const normalizedCount = count - params.min;
+  const normalizedMax = params.max - params.min;
+  const percentage = normalizedCount / normalizedMax;
+  const classNumber = Math.floor( percentage * (optCloudClassCount - 1) + 1 );
+  return optCloudClassPrefix + classNumber;
+}
+
 function generateTags(){
   /* [NEW] create a new variable allTags with an empty array */
   let allTags = {};
-  console.log('generateTags');
   /* find all articles */
   const articles = document.querySelectorAll(optArticleSelector);
   for(let article of articles){
@@ -86,7 +105,7 @@ function generateTags(){
       } else {
         allTags[tag]++;
       }
-    /* END LOOP: for each tag */
+      /* END LOOP: for each tag */
     }
     /* insert HTML of all the links into the tags wrapper */
     titleList.innerHTML = html;
@@ -97,13 +116,15 @@ function generateTags(){
     }
     /* END LOOP: for every article: */
     /* [NEW] find list of tags in right column */
-    const tagList = document.querySelector('.tags .list');
+    const tagList = document.querySelector('.tags');
+    const tagsParams = calculateTagsParams(allTags);
     /*[NEW] create variable for all links HTML code */
     let allTagsHTML = '';
     /* [NEW] start LOOP: for each tags in alltags: */
     for(let tag in allTags){
       /*[NEW] generate code of a link and add it to allTagsHTML: */
-      allTagsHTML += tag + '(' + allTags[tag] + ')';
+      const tagLinkHTML = '<li><a class="' + calculateTagClass(allTags[tag], tagsParams) + '" href="#tag-' + tag + '">' + tag + '</a></li>';
+      allTagsHTML += tagLinkHTML;
     }
     /* [NEW] add HML from allTagsHTML to tagList */
     tagList.innerHTML = allTagsHTML;
@@ -116,10 +137,8 @@ function tagClickHandler(event){
   event.preventDefault();
   /* make new constant named "clickedElement" and give it the value of "this" */
   const clickedElement = this;
-  console.log('Tag was clicked!');
   /* make a new constant "href" and read the attribute "href" of the clicked element */
   const href = clickedElement.getAttribute('href');
-  console.log('href', href);
   /* make a new constant "tag" and extract tag from the "href" constant */
   const tag = href.replace('#tag-', '');
   /* find all tag links with class active */
@@ -146,7 +165,6 @@ function tagClickHandler(event){
 function addClickListenersToTags(){
   /* find all links to tags */
   const allLinksToTags = document.querySelectorAll('a[href^="#tag-"]');
-  console.log(allLinksToTags);
   /* START LOOP: for each link */
   for(let link of allLinksToTags){
     /* add tagClickHandler as event listener for that link */
@@ -156,32 +174,73 @@ function addClickListenersToTags(){
 }
 addClickListenersToTags();
 
+function calculateDishParams(dishes) {
+  const dishParams = {max: 0, min: 999999};
+  for(let dish in dishes){
+    console.log(dish + ' is used ' + dishes[dish] + ' times');
+    if(dishes[dish] > dishParams.max){
+      dishParams.max = dishes[dish];
+    }
+    if(dishes[dish] < dishParams.min){
+      dishParams.min = dishes[dish];
+    }
+  }
+  return dishParams;
+}
+
+// function calculateDishClass(count, params){
+//   const normalizedCount = count - params.min;
+//   const normalizedMax = params.max - params.min;
+//   const percentage = normalizedCount / normalizedMax;
+//   const classNumber = Math.floor( percentage * (optCloudClassCount - 1) + 1 );
+//   return optCloudClassPrefix + classNumber;
+// }
+
 function generateDishes(){
-  console.log('generateDishes');
+  let allDishes = {};
   /* find all articles */
   const articles = document.querySelectorAll(optArticleSelector);
   for(let article of articles){
   /* START LOOP: for every article: */
     /* find tags wrapper */
-    const titleList = article.querySelector(optArticleDishesSelector);
-    console.log(titleList);
+    const titleList = article.querySelector(optDishesListSelector);
     /* make html variable with empty string */
     let html = '';
     /* get dishes from data-tags attribute */
     const dishTags = article.getAttribute('data-dish');
     /* generate HTML of the link */
     const dishLinkHTML = '<li><a href="#dish-' + dishTags + '"><span>' + dishTags + '</span></a></li>';
-    console.log('dishLinkHTML', dishLinkHTML);
     /* add generated code to html variable */
     html = html + dishLinkHTML;
+    /* [NEW] check if this link is NOT already in allTags */
+    if(!allDishes.hasOwnProperty(dishTags)){
+      /* [NEW] add generated code to allTags array */
+      allDishes[dishTags]= 1;
+    } else {
+      allDishes[dishTags]++;
+    }
     /* insert HTML of all the links into the tags wrapper */
-    titleList.innerHTML = html;
-    const links = article.querySelectorAll('.post-dish');
-    console.log(links);
-  //   for(let dish of dishes){
-  //     links.addEventListener('click', dishClickHandler);
-  //   }
-  // /* END LOOP: for every article: */
+    // titleList.innerHTML = html;
+    // const dishes = article.querySelectorAll('.post-dish');
+    // console.log(dishes);
+    // for(let dish of dishes){
+    //   dish.addEventListener('click', dishClickHandler);
+    // }
+    /* END LOOP: for every article: */
+    /* [NEW] find list of tags in right column */
+    const dishList = document.querySelector('.dishes');
+    const dishParams = calculateDishParams(allDishes);
+    console.log('dishParams:', dishParams);
+    /*[NEW] create variable for all links HTML code */
+    let allDishesHTML = '';
+    /* [NEW] start LOOP: for each tags in alltags: */
+    for(let dish in allDishes){
+    /*[NEW] generate code of a link and add it to allTagsHTML: */
+      const dishLinkHTML = '<li><a class="' + '" href="#dish-' + dish + '">' + dish + '</a></li>';
+      allDishesHTML += dishLinkHTML;
+    }
+    /* [NEW] add HML from allTagsHTML to tagList */
+    dishList.innerHTML = allDishesHTML;
   }
 }
 generateDishes();
@@ -191,7 +250,6 @@ function dishClickHandler(event){
   event.preventDefault();
   /* make new constant named "clickedElement" and give it the value of "this" */
   const clickedElement = this;
-  console.log('Dish was clicked!');
   /* make a new constant "href" and read the attribute "href" of the clicked element */
   const href = clickedElement.getAttribute('href');
   /* make a new constant "tag" and extract tag from the "href" constant */
@@ -200,7 +258,6 @@ function dishClickHandler(event){
   const dishLinks = document.querySelectorAll('a.active[href^="#dish-"]');
   for(let dishLink of dishLinks){
   /* START LOOP: for each active tag link */
-
     /* remove class active */
     dishLink.classList.remove('active');
   /* END LOOP: for each active tag link */
@@ -220,7 +277,6 @@ function dishClickHandler(event){
 function addClickListenersToDishes(){
   /* find all links to tags */
   const allLinksToDishes = document.querySelectorAll('a[href^="#dish-"]');
-  console.log(allLinksToDishes);
   /* START LOOP: for each link */
   for(let link of allLinksToDishes){
     /* add tagClickHandler as event listener for that link */
