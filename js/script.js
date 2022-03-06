@@ -203,7 +203,7 @@ function generateDishes(){
   for(let article of articles){
   /* START LOOP: for every article: */
     /* find tags wrapper */
-    const titleList = article.querySelector(optDishesListSelector);
+    const titleList = article.querySelector( optArticleDishesSelector);
     /* make html variable with empty string */
     let html = '';
     /* get dishes from data-tags attribute */
@@ -220,15 +220,15 @@ function generateDishes(){
       allDishes[dishTags]++;
     }
     /* insert HTML of all the links into the tags wrapper */
-    // titleList.innerHTML = html;
-    // const dishes = article.querySelectorAll('.post-dish .post');
-    // console.log(dishes);
-    // for(let dish of dishes){
-    //   dish.addEventListener('click', dishClickHandler);
-    // }
+    titleList.innerHTML = html;
+    const links = article.querySelectorAll('.dishes');
+    console.log(links);
+    for(let link of links){
+      link.addEventListener('click', dishClickHandler);
+    }
     /* END LOOP: for every article: */
     /* [NEW] find list of tags in right column */
-    const dishList = document.querySelector('.post-dish');
+    const dishList = document.querySelector('.dishes');
     const dishParams = calculateDishParams(allDishes);
     console.log('dishParams:', dishParams);
     /*[NEW] create variable for all links HTML code */
