@@ -1,4 +1,11 @@
 'use strict';
+const templates = {
+  articleLink: Handlebars.compile(document.querySelector('#template-article-link').innerHTML),
+  tagLink: Handlebars.compile(document.querySelector('#template-tag-link').innerHTML),
+  dishLink: Handlebars.compile(document.querySelector('#template-dish-link').innerHTML),
+  tagCloudLink: Handlebars.compile(document.querySelector('#template-tag-cloud-link').innerHTML),
+  dishCloudLink: Handlebars.compile(document.querySelector('#template-dish-cloud-link').innerHTML),
+};
 
 function titleClickHandler(event){
   event.preventDefault();
@@ -46,7 +53,8 @@ function generateTitleLinks(customSelector = ''){
     /* get the title from the title element */
     const articleTitle = article.querySelector(optTitleSelector).innerHTML;
     /* create HTML of the link */
-    const linkHTML = '<li><a href="#' + articleId + '"><span>' + articleTitle + '</span></a></li>';
+    const linkHTMLData = {id: articleId, title: articleTitle};
+    const linkHTML = templates.articleLink(linkHTMLData);
     console.log('linkHTML', linkHTML);
     html = html + linkHTML;
   }
@@ -95,7 +103,8 @@ function generateTags(){
     /* START LOOP: for each tag */
     for(let tag of articleTagsArray){
       /* generate HTML of the link */
-      const tagLinkHTML = '<li><a href="#tag-' + tag + '"><span>' + tag + '</span></a></li> ';
+      const tagLinkHTMLData = {id: tag, title: tag};
+      const tagLinkHTML = templates.tagLink(tagLinkHTMLData);
       /* add generated code to html variable */
       html = html + tagLinkHTML;
       /* [NEW] check if this link is NOT already in allTags */
@@ -119,15 +128,19 @@ function generateTags(){
     const tagList = document.querySelector('.tags');
     const tagsParams = calculateTagsParams(allTags);
     /*[NEW] create variable for all links HTML code */
-    let allTagsHTML = '';
+    const allTagsData = {tags: []};
     /* [NEW] start LOOP: for each tags in alltags: */
     for(let tag in allTags){
       /*[NEW] generate code of a link and add it to allTagsHTML: */
       const tagLinkHTML = '<li><a class="' + calculateTagClass(allTags[tag], tagsParams) + '" href="#tag-' + tag + '">' + tag + '</a></li>';
-      allTagsHTML += tagLinkHTML;
+      allTagsData.tags.push({
+        tag: tag,
+        count: allTags[tag],
+        className: calculateTagClass(allTags[tag], tagsParams)
+      });
     }
     /* [NEW] add HML from allTagsHTML to tagList */
-    tagList.innerHTML = allTagsHTML;
+    tagList.innerHTML = templates.tagCloudLink(allTagsData);
   }
 }
 generateTags();
@@ -209,7 +222,8 @@ function generateDishes(){
     /* get dishes from data-tags attribute */
     const dishTags = article.getAttribute('data-dish');
     /* generate HTML of the link */
-    const dishLinkHTML = '<li><a href="#dish-' + dishTags + '"><span>' + dishTags + '</span></a></li>';
+    const dishLinkHTMLData = {id: dishTags, title: dishTags};
+    const dishLinkHTML = templates.dishLink(dishLinkHTMLData);
     /* add generated code to html variable */
     html = html + dishLinkHTML;
     /* [NEW] check if this link is NOT already in allTags */
@@ -232,15 +246,18 @@ function generateDishes(){
     const dishParams = calculateDishParams(allDishes);
     console.log('dishParams:', dishParams);
     /*[NEW] create variable for all links HTML code */
-    let allDishesHTML = '';
+    const allDishesData = {dishes: []};
     /* [NEW] start LOOP: for each tags in alltags: */
     for(let dish in allDishes){
     /*[NEW] generate code of a link and add it to allTagsHTML: */
       const dishLinkHTML = '<li><a class="' + '" href="#dish-' + dish + '">' + dish + '</a></li>';
-      allDishesHTML += dishLinkHTML;
+      allDishesData.dishes.push({
+        dish: dish,
+        count: allDishes[dish],
+      });
     }
     /* [NEW] add HML from allTagsHTML to tagList */
-    dishList.innerHTML = allDishesHTML;
+    dishList.innerHTML = templates.dishCloudLink(allDishesData);
   }
 }
 generateDishes();
