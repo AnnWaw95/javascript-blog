@@ -132,7 +132,6 @@ function generateTags(){
     /* [NEW] start LOOP: for each tags in alltags: */
     for(let tag in allTags){
       /*[NEW] generate code of a link and add it to allTagsHTML: */
-      const tagLinkHTML = '<li><a class="' + calculateTagClass(allTags[tag], tagsParams) + '" href="#tag-' + tag + '">' + tag + '</a></li>';
       allTagsData.tags.push({
         tag: tag,
         count: allTags[tag],
@@ -250,7 +249,6 @@ function generateDishes(){
     /* [NEW] start LOOP: for each tags in alltags: */
     for(let dish in allDishes){
     /*[NEW] generate code of a link and add it to allTagsHTML: */
-      const dishLinkHTML = '<li><a class="' + '" href="#dish-' + dish + '">' + dish + '</a></li>';
       allDishesData.dishes.push({
         dish: dish,
         count: allDishes[dish],
